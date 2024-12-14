@@ -1,6 +1,6 @@
 services:
   paradedb:
-    image: oaklight/vectorsearch
+    image: oaklight/vectorsearch:latest-pg17
     container_name: vectorsearch
     environment:
       POSTGRES_USER: myuser
