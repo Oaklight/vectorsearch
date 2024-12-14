@@ -59,5 +59,5 @@ clean:
 .PHONY: prune
 prune: clean
 	@echo "Pruning Docker images"
-	docker rmi $(shell docker images -q oaklight/vectorsearch:$(BUILD_TAG))
-	docker rmi $(shell docker images -q oaklight/vectorsearch:$(LATEST_TAG))
+	docker rmi oaklight/vectorsearch:$(BUILD_TAG)
+	docker rmi oaklight/vectorsearch:$(LATEST_TAG)
