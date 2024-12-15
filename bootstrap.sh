@@ -14,7 +14,6 @@ export PGUSER="$POSTGRES_USER"
 for DB in template1 "$POSTGRES_DB"; do
     echo "Loading ParadeDB extensions into $DB"
     psql -d "$DB" <<-'EOSQL'
-    CREATE EXTENSION IF NOT EXISTS pg_search;
     CREATE EXTENSION IF NOT EXISTS vectorscale CASCADE;
     CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
 EOSQL

@@ -32,19 +32,15 @@ RUN dpkg -i /tmp/pgvectorscale.deb || apt-get install -fy && \
 ######################
 
 # Clean up the .deb package and APT cache
-RUN apt-get autoremove --purge && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get autoremove --purge -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /tmp/*
 
-# The postgresql.conf.sample file is used as a template for the postgresql.conf file, which
-# does not exist until the first time the container is started. By adding our settings to the
-# postgresql.conf.sample file, we ensure that our settings are applied onto the postgresql.conf file.
-#
-# The `postgres` database is the default database that exists in every Postgres installation. The pg_cron
-# extension requires a database to store its metadata tables. By using `postgres`, we ensure that it has a
-# stable, always-available database for its operations, no matter what other databases are created or deleted.
-RUN sed -i "s/^#shared_preload_libraries = ''/shared_preload_libraries = 'pg_search'/" /usr/share/postgresql/postgresql.conf.sample && \
-    echo "cron.database_name = 'postgres'" >>/usr/share/postgresql/postgresql.conf.sample
+# The postgresql.conf.sample file serves as a template for postgresql.conf, which is created upon the first container start.
+# Our settings are added to postgresql.conf.sample to ensure they are applied to postgresql.conf.
+# The `postgres` database is the default database in every Postgres installation.
+RUN sed -i "s/^#shared_preload_libraries = ''/shared_preload_libraries = 'pg_search'/" /usr/share/postgresql/postgresql.conf.sample
 
 # No need for an ENTRYPOINT or CMD if the base image handles PostgreSQL startup
 COPY ./bootstrap.sh /docker-entrypoint-initdb.d/10_bootstrap_paradedb.sh
