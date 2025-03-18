@@ -8,7 +8,7 @@ Additionally, an older release of paradedb included `pgvectorscale` from Timesca
 
 ## Build
 
-I started with the Postgres 17 base image featuring `pgvector` (by time of writing, the latest version is `pgvector/pgvector:0.8.0-pg17` ). 
+I started with the Postgres 17 base image featuring `pgvector` (by time of writing, the latest version is `pgvector/pgvector:0.8.0-pg17` ).
 Subsequently, I added `pg_search` and `pgvectorscale` as dependencies.
 
 The `bootstrap.sh` script includes SQL commands to create these extensions for every potential database, ensuring a comprehensive setup.
@@ -55,26 +55,26 @@ services:
 ### How to Use the Sample Configuration
 
 1. Copy `compose.yaml.sample` to `compose.yaml`:
-   
 
 ```bash
    cp compose.yaml.sample compose.yaml
-   ```
+```
 
 2. Modify `compose.yaml` as needed to match your environment and configuration preferences.
 
 3. Run the following command to start the service using Docker Compose:
-   
 
 ```bash
    docker compose up -d
-   ```
+```
 
 This will start the `vectorsearch` container with the configurations specified in `compose.yaml` .
 
 ## Note
 
 The image is based on the official postgres image, so you can use the same commands to interact with the database.
+
+For a detailed history of changes, see the [CHANGELOG](CHANGELOG.md).
 
 For example, you could use `psql` to connect to the database:
 
