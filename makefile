@@ -45,13 +45,13 @@ download: $(PG_SEARCH_DEB) $(PGVECTORSCALE_DEB)
 
 $(PG_SEARCH_DEB):
 	$(foreach version,$(PG_VERSIONS), \
-		@echo "Downloading pg_search.deb for PostgreSQL $(version) from $(PG_SEARCH_URL)"; \
+		echo "Downloading pg_search.deb for PostgreSQL $(version) from $(PG_SEARCH_URL)"; \
 		curl -L $(PG_SEARCH_URL) -o $(PG_SEARCH_DEB); \
 	)
 
 $(PGVECTORSCALE_DEB):
 	$(foreach version,$(PG_VERSIONS), \
-		@echo "Downloading pgvectorscale.zip for PostgreSQL $(version) from $(PGVECTORSCALE_ZIP_URL)"; \
+		echo "Downloading pgvectorscale.zip for PostgreSQL $(version) from $(PGVECTORSCALE_ZIP_URL)"; \
 		curl -L $(PGVECTORSCALE_ZIP_URL) -o pgvectorscale.zip; \
 		unzip -j pgvectorscale.zip "pgvectorscale-postgresql-$(version)_$(PG_VECTORSCALE_VERSION)-Linux_amd64.deb" -d .; \
 		mv pgvectorscale-postgresql-$(version)_$(PG_VECTORSCALE_VERSION)-Linux_amd64.deb $(PGVECTORSCALE_DEB); \
@@ -62,7 +62,7 @@ $(PGVECTORSCALE_DEB):
 .PHONY: build
 build: download
 	$(foreach version,$(PG_VERSIONS), \
-		@echo "Building Docker image for PostgreSQL $(version)"; \
+		echo "Building Docker image for PostgreSQL $(version)"; \
 		docker build --build-arg PG_VECTOR_BASE_VERSION=$(PG_VECTOR_BASE_VERSION) -t oaklight/vectorsearch:$(BUILD_TAG) .; \
 		docker tag oaklight/vectorsearch:$(BUILD_TAG) oaklight/vectorsearch:$(LATEST_TAG); \
 	)
@@ -70,14 +70,14 @@ build: download
 # Clean up the deb files
 .PHONY: clean
 clean:
-	@echo "Cleaning up deb files"
+	echo "Cleaning up deb files"
 	rm -f $(PG_SEARCH_DEB) $(PGVECTORSCALE_DEB)
 
 # Prune Docker images
 .PHONY: prune
 prune: clean
 	$(foreach version,$(PG_VERSIONS), \
-		@echo "Pruning Docker images for PostgreSQL $(version)"; \
+		echo "Pruning Docker images for PostgreSQL $(version)"; \
 		docker rmi oaklight/vectorsearch:$(BUILD_TAG); \
 		docker rmi oaklight/vectorsearch:$(LATEST_TAG); \
 	)
