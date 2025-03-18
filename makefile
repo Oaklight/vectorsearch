@@ -81,3 +81,12 @@ prune: clean
 		docker rmi oaklight/vectorsearch:$(BUILD_TAG); \
 		docker rmi oaklight/vectorsearch:$(LATEST_TAG); \
 	)
+
+# Push Docker images to Docker Hub
+.PHONY: push
+push: build
+	$(foreach version,$(PG_VERSIONS), \
+		echo "Pushing Docker images for PostgreSQL $(version)"; \
+		docker push oaklight/vectorsearch:$(BUILD_TAG); \
+		docker push oaklight/vectorsearch:$(LATEST_TAG); \
+	)
